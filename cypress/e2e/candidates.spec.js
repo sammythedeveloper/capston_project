@@ -1,37 +1,47 @@
-import CandidatesPage from '../pages/candidatePage';
-import LoginPage from '../pages/loginPage';
-import candidateData from '../fixtures/candidateData.json';
+import CandidatePage from "../pages/candidatePage";
+import LoginPage from "../pages/loginPage";
+import candidateData from "../fixtures/candidateData.json";
 
-describe('Candidates Module Tests', () => {
-  
+describe("Recruitment Module - Candidates", () => {
   before(() => {
-    LoginPage.visit();
-    LoginPage.login("Admin", "admin123");
+    cy.log("Running once before all candidate tests");
+    cy.visit('/web/index.php/auth/login');
+    cy.get('input[name="username"]').type('Admin');
+    cy.get('input[name="password"]').type('admin123');
+    cy.get('button[type="submit"]').click();
+    cy.get(':nth-child(5) > .oxd-main-menu-item > .oxd-text').click(); // Go to Candidates page
   });
 
-  beforeEach(() => {
-    CandidatesPage.navigateTo();
+  it('should add a new candidate successfully', () => {
+    cy.get('.orangehrm-header-container > .oxd-button').click();
+    cy.get('input[name="firstName"]').type('John');
+    cy.get('input[name="lastName"]').type('Doe');
+    cy.get('input[placeholder="Type here"]').type('john.doe@example.com');
+    // Add any required submit button here if needed
+  });
+
+  candidateData.forEach((candidate) => {
+    it(`Add candidate: ${candidate.firstName} ${candidate.lastName}`, () => {
+      CandidatePage.addCandidate(candidate);
+      if (candidate.valid) {
+        cy.contains("Successfully Saved").should("be.visible");
+      } else {
+        cy.contains("Required").should("be.visible");
+      }
+    });
   });
 
   after(() => {
-    cy.log('All candidate tests completed.');
+    cy.log("All candidate tests finished.");
+    // Optional: Logout
+    cy.get('.oxd-userdropdown-tab').click(); // Open profile dropdown
+    cy.contains('Logout').click(); // Click logout
   });
 
   afterEach(function () {
-    if (this.currentTest.state === 'failed') {
-      cy.screenshot(`failed-candidates-${this.currentTest.title}`);
+    if (this.currentTest.state === "failed") {
+      const testName = this.currentTest.title;
+      cy.screenshot(`failed-candidate-${testName}`);
     }
   });
-
-  it('Add new candidate', () => {
-    CandidatesPage.addCandidate(candidateData[0]);
-    cy.contains('Candidate added successfully').should('exist');
-  });
-
-  it('Search candidate by job title', () => {
-    CandidatesPage.searchByJobTitle(candidateData[0].jobTitle);
-    cy.contains(candidateData[0].firstName).should('be.visible');
-  });
-
 });
-

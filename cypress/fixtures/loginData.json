@@ -3,7 +3,10 @@
     "username": "Admin",
     "password": "admin123",
     "valid": true
+  },
+  {
+    "username": "fakeUser",
+    "password": "wrongPass",
+    "valid": false
   }
-
 ]
-

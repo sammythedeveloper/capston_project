@@ -1,21 +1,17 @@
 class VacanciesPage {
-  navigateTo() {
-    cy.get(':nth-child(1) > .oxd-main-menu-item').click(); // Recruitment
-    cy.contains('Vacancies').click();
-  }
+  elements = {
+    addBtn: () => cy.get('.oxd-button--secondary'), // Adjust as needed
+    jobTitle: () => cy.get('.oxd-select-text-input'),
+    vacancyName: () => cy.get('input[name="vacancyName"]'),
+    hiringManager: () => cy.get('input[placeholder="Type for hints..."]'),
+    saveBtn: () => cy.get('button[type="submit"]'),
+  };
 
-  addVacancy(vacancy) {
-    cy.contains('Add').click();
-    cy.get('.oxd-select-text-input').eq(0).click().type(`${vacancy.jobTitle}{enter}`);
-    cy.get('input[placeholder="Type vacancy name"]').type(vacancy.vacancyName);
-    cy.get('.oxd-select-text-input').eq(1).click().type(`${vacancy.hiringManager}{enter}`);
-    cy.get('input[type="number"]').type(vacancy.positions);
-    cy.contains('Save').click();
-  }
-
-  searchVacancy(jobTitle) {
-    cy.get('.oxd-select-text-input').eq(0).click().type(`${jobTitle}{enter}`);
-    cy.contains('Search').click();
+  fillVacancyForm({ jobTitle, vacancyName, hiringManager }) {
+    this.elements.jobTitle().click().type(jobTitle).type('{enter}');
+    this.elements.vacancyName().type(vacancyName);
+    this.elements.hiringManager().type(hiringManager).type('{enter}');
+    this.elements.saveBtn().click();
   }
 }
 
