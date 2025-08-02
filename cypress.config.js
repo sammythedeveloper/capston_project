@@ -18,7 +18,7 @@ module.exports = defineConfig({
 
       return config;
     },
-    specPattern: 'cypress/e2e/**/*.cy.{js,jsx,ts,tsx}', // Adjust if needed
+    specPattern: 'cypress/e2e/**/*.spec.{js,jsx,ts,tsx}', // Adjust if needed
     supportFile: 'cypress/support/e2e.js',
   },
 

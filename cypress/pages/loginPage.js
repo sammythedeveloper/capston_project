@@ -1,25 +1,25 @@
 class LoginPage {
   visit() {
-    cy.visit("https://opensource-demo.orangehrmlive.com/web/index.php/auth/login");
-    cy.url().should('include', '/auth/login');
+    cy.visit('/web/index.php/auth/login');
   }
 
-  fillUsername(username) {
-    cy.get('input[name="username"]', { timeout: 10000 })  
-      .should('be.visible')                              
-      .type(username);
+  enterUsername(username) {
+    cy.get('input[name="username"]').type(username);
   }
 
-  fillPassword(password) {
-    cy.get('input[name="password"]').should('be.visible').type(password);
+  enterPassword(password) {
+    cy.get('input[name="password"]').type(password);
   }
 
-  clickLogin() {
+  submit() {
     cy.get('button[type="submit"]').click();
   }
-  getErrorMessage() {
-    return cy.get('.oxd-alert-content-text'); // adjust selector as needed
+
+  login(username, password) {
+    this.enterUsername(username);
+    this.enterPassword(password);
+    this.submit();
   }
 }
 
-export default new LoginPage(); 
+export default new LoginPage();

@@ -1,3 +1,9 @@
 [
-  { "username": "Admin", "password": "admin123", "valid": true }
+  {
+    "username": "Admin",
+    "password": "admin123",
+    "valid": true
+  }
+
 ]
+
